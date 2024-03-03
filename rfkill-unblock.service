@@ -1,0 +1,14 @@
+#yoshi
+#unblok wifi/bluetooth after resume
+
+[Unit]
+Description=Local system resume actions
+After=suspend.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/rfkill-unblock.py
+
+[Install]
+WantedBy=suspend.target
+
