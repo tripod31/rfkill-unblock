@@ -15,15 +15,17 @@ class Test1(unittest.TestCase):
         """
         cmd = "timeout 70 tail -n 0 -f /var/log/syslog|grep rfkill-unblock.py"
         proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = proc.communicate()
+        output = ""
+        while proc.poll() is None:
+            output = proc.stdout.readline().decode().strip()
+            print(output)
+            #proc.kill()
 
-        if stdout is not None:
+        if len(output)>0:
             print("syslogでスクリプトの出力が確認できました")
-            out=stdout.decode('utf-8').strip()
-            print(out)
         else:
             print("syslogでスクリプトの出力が確認できませんでした")
-        assert len(out)>0
+        assert len(output)>0
 
     @classmethod
     def tearDownClass(cls):
