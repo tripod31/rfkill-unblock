@@ -14,12 +14,14 @@ class Test1(unittest.TestCase):
         syslogを監視して、スクリプトが実行されていることを確認
         """
         cmd = "timeout 70 tail -n 0 -f /var/log/syslog|grep rfkill-unblock.py"
-        proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output = ""
+        proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+        output=""
         while proc.poll() is None:
             output = proc.stdout.readline().decode().strip()
             print(output)
-            #proc.kill()
+            proc.kill()
+            proc.wait()
+            break
 
         if len(output)>0:
             print("syslogでスクリプトの出力が確認できました")
