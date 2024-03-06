@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # coding:utf-8
 
+"""
+syslogを監視しcronがスクリプトを実行していることを確認する
+"""
+
 import time
 import os
 from stat import *
