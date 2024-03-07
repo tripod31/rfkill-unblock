@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-#rfkill unblock
+#rfkill-unblock daemon
 
-import configparser
-import os
 import syslog
 import subprocess
 import json
+import time
 
 MSG_TITLE='rfkill-unblock'
 DEV_TYPES=('wlan','bluetooth')
 KEY='rfkilldevices'
+INTERVAL_SEC=10
 
 class Process:
 
@@ -25,7 +25,7 @@ class Process:
         proc = subprocess.run("rfkill -J", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if proc.returncode != 0:
             raise Exception("rfkill exec err")
-        
+
         info = json.loads(proc.stdout)
         if not KEY in info:
             raise Exception(f"rfkill parse err:key('{KEY}')not exists")
@@ -43,13 +43,14 @@ class Process:
             raise Exception("rfkill exec err")
 
     def main(self):
-        #os.chdir(os.path.dirname(__file__)) #chdir to script path
-        syslog.openlog(MSG_TITLE)   
-        states = self.get_states()
-        for type in DEV_TYPES:
-            if type in states and states[type] == 'blocked':
-                self.unblock(type)     
-                syslog.syslog("unblocked {}".format(type))
+        syslog.openlog(MSG_TITLE)
+        while True:
+            states = self.get_states()
+            for type in DEV_TYPES:
+                if type in states and states[type] == 'blocked':
+                    self.unblock(type)
+                    syslog.syslog("unblocked {}".format(type))
+            time.sleep(INTERVAL_SEC)
 
 if __name__ == '__main__':
     obj = Process()

@@ -5,20 +5,17 @@ ubuntuで、自動的に機内モードになってwifi、bluetoothがブロッ�
 ubuntu23.10  
 python3.11.6
 
-## 既知の問題
-systemdにスクリプトを登録しても、スリープからの復帰後にブロックが解除されない
-
 ## rfkill-unblock.py
 機内モードになってwifi、bluetoothがブロックされている時、rfkillコマンドでブロック解除する  
+常駐し、10秒毎に処理を行う
 
 ## インストール
-cronにスクリプトを登録し、１分毎に実行  
-systemdにスクリプトを登録し、スリープからの復帰後にスクリプトを実行
+systemdにスクリプトをサービス登録  
 ```
 $sudo ./install.sh
 ```
 ## アンインストール
-スクリプトを登録解除  
+systemdからスクリプトを登録解除  
 ```
 $sudo ./uninstall.py
 ```
