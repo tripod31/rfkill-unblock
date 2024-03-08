@@ -5,11 +5,11 @@ import syslog
 import subprocess
 import json
 import time
+import argparse
 
 MSG_TITLE='rfkill-unblock'
 DEV_TYPES=('wlan','bluetooth')
 KEY='rfkilldevices'
-INTERVAL_SEC=10
 
 class Process:
 
@@ -50,8 +50,12 @@ class Process:
                 if type in states and states[type] == 'blocked':
                     self.unblock(type)
                     syslog.syslog("unblocked {}".format(type))
-            time.sleep(INTERVAL_SEC)
+            time.sleep(args.interval_sec)
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--interval_sec',default=10, help="state checking interval(seccond).default=10")
+    args=parser.parse_args()
+
     obj = Process()
     obj.main()
