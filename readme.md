@@ -14,7 +14,7 @@ python3.11.6
 ## インストール
 systemdにスクリプトをサービス登録  
 ```
-$sudo ./install.sh
+$sudo ./install.py
 ```
 ## アンインストール
 systemdからスクリプトを登録解除  
