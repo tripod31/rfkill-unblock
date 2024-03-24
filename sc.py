@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 SERVICE="rfkill-unblock"
-ACTIONS = ["enable","disable","start","stop","status"]
+ACTIONS = ["enable","disable","start","stop","restart","status"]
 
 def process():
     parser = argparse.ArgumentParser()
