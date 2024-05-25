@@ -7,8 +7,9 @@ import subprocess
 
 def install():
     shutil.copy("rfkill-unblock.py"             , "/usr/local/bin/")
-    shutil.copy("rfkill-unblock,service"        ,"/etc/systemd/system/")
+    shutil.copy("rfkill-unblock.service"        ,"/etc/systemd/system/")
     subprocess.run("systemctl enable rfkill-unblock.service",shell=True)
+    subprocess.run("systemctl start rfkill-unblock.service",shell=True)
 
 if __name__ == '__main__':
     try:
